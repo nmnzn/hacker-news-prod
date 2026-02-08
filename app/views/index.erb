@@ -1,0 +1,71 @@
+<!-- Titre Hero ULTRA-MODERNE -->
+<div class="hero-wrapper">
+  <!-- Canvas pour particules en arrière-plan -->
+  <div id="particles-js"></div>
+
+  <!-- Canvas pour effets custom -->
+  <canvas id="glitch-canvas"></canvas>
+
+  <!-- Container du titre avec effets -->
+  <div class="hero-title-container">
+    <h1 class="hero-title glitch" data-text="HACKER NEWS">
+      <!-- Effet de typing avec Typed.js -->
+      <span id="typed-output"></span>
+
+      <!-- Layers pour effet glitch -->
+      <span class="glitch-layer glitch-layer-1" aria-hidden="true">HACKER NEWS</span>
+      <span class="glitch-layer glitch-layer-2" aria-hidden="true">HACKER NEWS</span>
+      <span class="glitch-layer glitch-layer-3" aria-hidden="true">HACKER NEWS</span>
+    </h1>
+
+    <!-- Effet de scan line -->
+    <div class="scanline"></div>
+
+    <!-- Indicateur de chargement cyber -->
+    <div class="cyber-loader">
+      <span class="loader-text">INITIALIZING...</span>
+      <div class="loader-bar"></div>
+    </div>
+  </div>
+</div>
+
+<div class="create-post-form">
+  <h2 class="form-title">📝 Publier un nouveau post</h2>
+
+  <form action="/posts" method="post">
+    <div class="form-group">
+      <label for="title">Titre *</label>
+      <input type="text" id="title" name="title" placeholder="Ex: Mon super article sur Ruby" required maxlength="200" >
+    </div>
+
+    <div class="form-group">
+      <label for="url">URL</label>
+      <input type="url" id="url" name="url" placeholder="https://exemple.com/article" >
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-large">
+      🚀 Publier
+    </button>
+  </form>
+</div>
+
+<!-- Feed Box avec liste des posts -->
+<div class="feed-box">
+  <ul class="post-list">
+    <% @posts.each do |post| %>
+      <li class="post-item">
+        <div class="post-row">
+          <a class="post-title" href="/posts/<%= post.id %>"><%= post.title %></a>
+          <span class="badge badge-primary">⭐ <%= post.votes %></span>
+        </div>
+
+        <div class="post-actions">
+          <a class="btn btn-primary" href="/posts/<%= post.id %>">Voir</a>
+          <% if post.url && !post.url.empty? %>
+            <a class="btn" href="<%= post.url %>" target="_blank" rel="noopener">Ouvrir lien</a>
+          <% end %>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+</div>

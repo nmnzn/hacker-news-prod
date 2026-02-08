@@ -1,0 +1,105 @@
+<main class="container">
+
+  <!-- Card principale avec vote à gauche -->
+  <section class="post-detail">
+
+    <!-- ===== COLONNE DE VOTE À GAUCHE ===== -->
+    <aside class="vote-container">
+      <% if @cooldown_remaining > 0 %>
+        <!-- Cooldown actif : boutons désactivés -->
+        <button class="vote-btn vote-disabled" disabled>
+          <span>▲</span>
+        </button>
+
+        <div class="vote-score cooldown-active">
+          <%= @post.votes %>
+          <div class="cooldown-timer">
+            Attendez <%= @cooldown_remaining %>s
+          </div>
+        </div>
+
+        <button class="vote-btn vote-disabled" disabled>
+          <span>▼</span>
+        </button>
+      <% else %>
+        <!-- Cooldown terminé : boutons actifs -->
+        <form action="/posts/<%= @post.id %>/upvote" method="post">
+          <button type="submit" class="vote-btn vote-up">
+            <span>▲</span>
+          </button>
+        </form>
+
+        <div class="vote-score">
+          <%= @post.votes %>
+        </div>
+
+        <form action="/posts/<%= @post.id %>/downvote" method="post">
+          <button type="submit" class="vote-btn vote-down">
+            <span>▼</span>
+          </button>
+        </form>
+      <% end %>
+    </aside>
+
+    <!-- ===== CONTENU DU POST À DROITE ===== -->
+    <div class="post-content">
+      <div class="card">
+
+        <!-- En-tête -->
+        <div class="card-header">
+          <h1 class="title"><%= @post.title %></h1>
+          <p class="meta">
+            <span class="muted">Post #<%= @post.id %></span>
+          </p>
+        </div>
+
+        <!-- Corps -->
+        <div class="card-body">
+          <% if @post.url && !@post.url.empty? %>
+            <a class="btn btn-primary" href="<%= @post.url %>" target="_blank" rel="noopener">
+              🔗 Ouvrir le lien
+            </a>
+          <% else %>
+            <p class="muted">Aucun lien disponible pour ce post.</p>
+          <% end %>
+        </div>
+
+        <!-- Footer avec infos -->
+        <footer class="card-footer">
+          <div class="grid">
+            <div>
+              <p class="label">Auteur</p>
+              <p class="value">User #<%= @post.user_id %></p>
+            </div>
+            <div>
+              <p class="label">Créé</p>
+              <p class="value"><%= @post.created_at.strftime("%d/%m/%Y %H:%M") %></p>
+            </div>
+            <div>
+              <p class="label">Mis à jour</p>
+              <p class="value"><%= @post.updated_at.strftime("%d/%m/%Y %H:%M") %></p>
+            </div>
+          </div>
+        </footer>
+
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ===== BOUTON RETOUR EN BAS CENTRÉ ===== -->
+  <div style="text-align: center; margin-top: 32px;">
+    <a class="btn btn-primary" href="/">← Retour à la liste</a>
+  </div>
+
+  <!-- ===== AUTO-REFRESH APRÈS COOLDOWN ===== -->
+  <% if @cooldown_remaining > 0 %>
+    <script>
+      // Auto-refresh après le cooldown
+      setTimeout(function() {
+        window.location.reload();
+      }, <%= @cooldown_remaining * 1000 %>);
+    </script>
+  <% end %>
+
+</main>
