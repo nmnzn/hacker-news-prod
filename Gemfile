@@ -3,8 +3,8 @@ source "https://rubygems.org"
 gem "sinatra"
 gem "sinatra-contrib"
 gem "puma"
-gem "activerecord", "~> 8.1"
-gem "sqlite3", "2.8.1"
+gem "activerecord", "~> 7.1"
+gem "sqlite3"
 gem "rackup"
 gem "faker"
 gem "rake"
@@ -14,4 +14,3 @@ group :development do
   gem "pry-byebug"
   gem "rspec"
 end
-
