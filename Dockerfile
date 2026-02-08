@@ -11,7 +11,7 @@ WORKDIR /app
 
 # Copier les gems
 COPY Gemfile Gemfile.lock ./
-RUN bundle install --without development
+RUN bundle install
 
 # Copier tout le projet
 COPY . .
