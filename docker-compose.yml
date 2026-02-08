@@ -12,8 +12,8 @@ services:
     environment:
       - RACK_ENV=production
     networks:
-      - proxy
+      - nginx-proxy-manager_default
 
 networks:
-  proxy:
+  nginx-proxy-manager_default:
     external: true
