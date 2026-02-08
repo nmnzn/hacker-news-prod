@@ -1,6 +1,8 @@
+.rubocop.yml
+spec/
+README*.md
 .git
 .gitignore
-README.md
 *.log
 tmp/
 node_modules/

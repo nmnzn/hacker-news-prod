@@ -1,18 +1,26 @@
-FROM ruby:3.3.0
+FROM ruby:3.2-slim
 
-RUN apt-get update -qq && apt-get install -y \
+# Dépendances système
+RUN apt-get update && apt-get install -y \
     build-essential \
+    sqlite3 \
     libsqlite3-dev \
-    nodejs
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-COPY Gemfile* ./
+# Copier les gems
+COPY Gemfile Gemfile.lock ./
+RUN bundle install --without development
 
-RUN bundle install
-
+# Copier tout le projet
 COPY . .
+
+# Script de démarrage
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 EXPOSE 4567
 
-CMD ["ruby", "app/app.rb", "-o", "0.0.0.0"]
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["ruby", "lib/app.rb", "-o", "0.0.0.0"]

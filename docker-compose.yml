@@ -10,10 +10,10 @@ services:
     volumes:
       - ./db:/app/db
     environment:
-      - RACK_ENV=production
+      - RACK_ENV=development
     networks:
-      - nginx-proxy-manager_default
+      - proxy-network
 
 networks:
-  nginx-proxy-manager_default:
+  proxy-network:
     external: true
