@@ -14,8 +14,11 @@ end
 
 def migration_context
   migrations_path = File.join(__dir__, "db", "migrate")
-  ActiveRecord::MigrationContext.new(migrations_path, ActiveRecord::SchemaMigration)
+
+  conn = ActiveRecord::Base.connection
+  ActiveRecord::MigrationContext.new(migrations_path, conn.schema_migration, conn.internal_metadata)
 end
+
 
 # ----------------------------
 # Optional: RSpec task (ne casse pas en prod)
@@ -32,7 +35,7 @@ task :rubocop do
   sh "rubocop --format simple || true"
 end
 
-task default: [:rubocop, (Rake::Task.task_defined?(:spec) ? :spec : nil)].compact
+
 
 # ----------------------------
 # DB tasks
@@ -75,8 +78,9 @@ namespace :db do
 
   desc "Show current schema version"
   task :version do
-    puts "Current version: #{ActiveRecord::SchemaMigration.maximum(:version) || 0}"
+    puts "Current version: #{migration_context.current_version}"
   end
+
 
   desc "Seed the database (db/seeds.rb)"
   task :seed do
