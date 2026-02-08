@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  hacker-news:
+    build: .
+    container_name: hacker-news
+    restart: unless-stopped
+    ports:
+      - "4567:4567"
+    volumes:
+      - ./db:/app/db
+    environment:
+      - RACK_ENV=production
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
